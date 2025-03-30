@@ -4,6 +4,29 @@ import bcrypt from "bcryptjs";
 import { UserModel } from "../models/UserModel";
 import { generateToken } from "../utils";
 
+export const signInUser = asyncHandler(async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const user = await UserModel.findOne({ email: email });
+  if (!user) {
+    res.status(404).json({ message: "No user found." });
+    return;
+  }
+
+  if (bcrypt.compareSync(password, user.password)) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user),
+    });
+    return;
+  } else {
+    res.status(400).json({ message: "Invalid credentials." });
+    return;
+  }
+});
+
 export const signUpUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, name, password } = req.body;
 
