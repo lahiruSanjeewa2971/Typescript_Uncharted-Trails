@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 
 import userRouter from "./routes/userRoutes";
+import postRoutes from "./routes/postRoutes";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ mongoose
 app.use(cors({ credentials: true, origin: ["http://localhost:5173"] }));
 
 app.use("/api/users", userRouter);
+app.use('/api/posts', postRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started at port : ${PORT}`);
