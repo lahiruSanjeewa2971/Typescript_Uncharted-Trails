@@ -4,6 +4,25 @@ import bcrypt from "bcryptjs";
 import { UserModel } from "../models/UserModel";
 import { generateToken } from "../utils";
 
+export const getSingleUserDetails = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.params;
+      const userDetails = await UserModel.findById(userId);
+
+      if (!userDetails) {
+        res.status(404).json({ message: "No user found." });
+        return;
+      }
+
+      res.status(200).json({ data: userDetails });
+    } catch (error) {
+      console.log("Error in getting single user details :", error);
+      res.status(500).json({ message: "Server error." });
+    }
+  }
+);
+
 export const signInUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email: email });
