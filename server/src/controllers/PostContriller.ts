@@ -5,6 +5,39 @@ import mongoose from "mongoose";
 import { Ref } from "@typegoose/typegoose";
 import { User } from "../models/UserModel";
 
+export const getAllPostsToDisplayInFeed = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const postList = await PostModel.find();
+
+      res.status(200).json({ data: postList });
+    } catch (error) {
+      console.log("Error in get all posts :", error);
+      res.status(500).json({ message: "Server error." });
+    }
+  }
+);
+
+export const getSinglePostData = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const { postId } = req.params;
+
+      const singlePost = await PostModel.findById(postId);
+
+      if (!singlePost) {
+        res.status(404).json({ message: "No post was found." });
+        return;
+      }
+
+      res.status(200).json({ data: singlePost });
+    } catch (error) {
+      console.log("Error in getSinglePost :", error);
+      res.status(500).json({ message: "Server error." });
+    }
+  }
+);
+
 export const createPost = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { title, description, images, location } = req.body;
@@ -78,3 +111,39 @@ export const toggleLike = asyncHandler(async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error." });
   }
 });
+
+export const addNewComment = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { text } = req.body;
+    const { postId } = req.params;
+    const userId = req.user;
+
+    try {
+      const post = await PostModel.findById(postId);
+
+      if (!post) {
+        res.status(404).json({ message: "No existing post was found." });
+        return;
+      }
+
+      const newComment = {
+        userId,
+        text,
+        createdAt: new Date(),
+      };
+
+      post.comments.push(newComment as any);
+
+      await post.save();
+
+      res.status(201).json({ message: "Comment added", data: post });
+    } catch (error) {
+      console.log("Error in adding a new Comment :", error);
+      res.status(500).json({ message: "Server error." });
+    }
+  }
+);
+
+// delete a comment - API
+
+// edit a comment - API

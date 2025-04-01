@@ -11,6 +11,8 @@ dotenv.config();
 const PORT = process.env.PORT;
 const MONGO_URL = process.env.DB_CONNECTION;
 
+// add websocket (socket.io) to display likes or comments to all users ASAP when a like or comment is done.
+
 mongoose.set("strictQuery", true);
 
 const app = express();
