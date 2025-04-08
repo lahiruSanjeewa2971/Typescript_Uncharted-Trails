@@ -2,6 +2,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import NavLinks from "./NavLinks";
+import { Link, useNavigate } from "react-router-dom";
 
 type Props = {
   isTopOfPage: boolean;
@@ -11,6 +12,7 @@ const Navbar = ({ isTopOfPage }: Props) => {
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const token = localStorage.getItem("token");
   const navBarBackground = isTopOfPage ? "" : "bg-black drop-shadow";
+  const navigate = useNavigate();
 
   // const navItems = ["About Us", "Featured Places", "Write a post"];
   const navItems = [
@@ -29,13 +31,14 @@ const Navbar = ({ isTopOfPage }: Props) => {
   ];
 
   const AuthButton = ({ mobile = false }: { mobile?: boolean }) => (
-    <button
+    <Link
+      to="/login"
       className={`${
-        mobile ? "bg-white text-gray-500" : "bg-gray-500 text-white"
+        mobile ? "bg-white text-gray-500" : "bg-primary text-textLight"
       } px-5 py-1.5 border-none rounded-xl`}
     >
       {token ? "Logout" : "Sign In"}
-    </button>
+    </Link>
   );
 
   return (
@@ -45,7 +48,7 @@ const Navbar = ({ isTopOfPage }: Props) => {
       >
         <div className="w-5/6 mx-auto flex items-center justify-between">
           {/* Logo */}
-          <h1 className="font-logo text-2xl sm:text-3xl md:text-4xl">
+          <h1 className="font-logo text-2xl sm:text-3xl md:text-4xl text-textPrimary">
             Uncharted Trails
           </h1>
 
