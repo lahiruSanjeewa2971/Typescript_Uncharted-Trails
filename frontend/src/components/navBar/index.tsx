@@ -2,7 +2,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import NavLinks from "./NavLinks";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type Props = {
   isTopOfPage: boolean;
@@ -11,8 +11,12 @@ type Props = {
 const Navbar = ({ isTopOfPage }: Props) => {
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const token = localStorage.getItem("token");
-  const navBarBackground = isTopOfPage ? "" : "bg-black drop-shadow";
-  const navigate = useNavigate();
+  const location = useLocation();
+  const navBarBackground = location.pathname.includes("login")
+    ? "bg-background"
+    : isTopOfPage
+    ? ""
+    : "bg-black drop-shadow";
 
   // const navItems = ["About Us", "Featured Places", "Write a post"];
   const navItems = [
@@ -44,22 +48,29 @@ const Navbar = ({ isTopOfPage }: Props) => {
   return (
     <nav>
       <div
-        className={`${navBarBackground} fixed top-0 z-30 w-full py-6 flex items-center justify-between`}
+        className={`${navBarBackground} fixed top-0 z-30 w-full h-[64px] py-6 flex items-center justify-between`}
       >
         <div className="w-5/6 mx-auto flex items-center justify-between">
           {/* Logo */}
-          <h1 className="font-logo text-2xl sm:text-3xl md:text-4xl text-textPrimary">
+          {/* <h1 className="font-logo text-2xl sm:text-3xl md:text-4xl text-textPrimary"> */}
+          <h1
+            className={`font-logo text-2xl sm:text-3xl md:text-4xl ${
+              location.pathname.includes("login")
+                ? "text-textLight"
+                : "text-textPrimary"
+            }`}
+          >
             Uncharted Trails
           </h1>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex w-4/6 items-center justify-between gap-2">
             <div className="flex w-3/4 items-center justify-evenly gap-7">
-              {navItems.map((item) => (
+              {!location.pathname.includes("login") && navItems.map((item) => (
                 <NavLinks key={item.name} linkName={item.name} />
               ))}
             </div>
-            <AuthButton />
+            {!location.pathname.includes("login") && <AuthButton />}
           </div>
 
           {/* Hamburger for Mobile */}
