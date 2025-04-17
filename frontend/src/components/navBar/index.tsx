@@ -12,7 +12,7 @@ const Navbar = ({ isTopOfPage }: Props) => {
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const token = localStorage.getItem("token");
   const location = useLocation();
-  const navBarBackground = location.pathname.includes("login")
+  const navBarBackground = ["login", "register"].some((path) => location.pathname.includes(path))
     ? "bg-background"
     : isTopOfPage
     ? ""
@@ -55,7 +55,8 @@ const Navbar = ({ isTopOfPage }: Props) => {
           {/* <h1 className="font-logo text-2xl sm:text-3xl md:text-4xl text-textPrimary"> */}
           <h1
             className={`font-logo text-2xl sm:text-3xl md:text-4xl ${
-              location.pathname.includes("login")
+              // location.pathname.includes("login")
+              ["login", "register"].some((path) => location.pathname.includes(path))
                 ? "text-textLight"
                 : "text-textPrimary"
             }`}
@@ -66,11 +67,12 @@ const Navbar = ({ isTopOfPage }: Props) => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex w-4/6 items-center justify-between gap-2">
             <div className="flex w-3/4 items-center justify-evenly gap-7">
-              {!location.pathname.includes("login") && navItems.map((item) => (
+              {!["login", "register"].some((path) => location.pathname.includes(path)) && navItems.map((item) => (
+              // {!location.pathname.includes("login") && navItems.map((item) => (
                 <NavLinks key={item.name} linkName={item.name} />
               ))}
             </div>
-            {!location.pathname.includes("login") && <AuthButton />}
+            {!["login", "register"].some((path) => location.pathname.includes(path)) && <AuthButton />}
           </div>
 
           {/* Hamburger for Mobile */}

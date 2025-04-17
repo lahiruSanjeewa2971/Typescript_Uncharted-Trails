@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 type Props = {};
@@ -6,8 +5,8 @@ type Props = {};
 const Login = ({}: Props) => {
   return (
     <div className="flex w-full bg-background h-[calc(100vh-64px)] overflow-auto p-8">
-      <div className="md:w-1/3 hidden md:flex md:flex-col md:items-center border-r-2">
-        <div className="pt-40">
+      <div className="md:w-1/3 hidden md:flex md:flex-col md:items-center justify-center border-r-2">
+        <div className="">
           <span className="text-textLight text-2xl font-serif">
             Join our community
           </span>
@@ -18,7 +17,7 @@ const Login = ({}: Props) => {
         <div className="absolute md:top-[64px] md:right-8 bottom-6 ">
           <span className="text-textLight">
             Not a member ?{" "}
-            <Link to="#" className="underline">
+            <Link to="/register" className="underline">
               Register
             </Link>
           </span>
