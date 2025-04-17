@@ -13,3 +13,7 @@ body,
     font-family: sans-serif, "Yesteryear";
     @apply text-gray-500
 }
+
+@layer base {
+  :root {
+        --radius: 0.5rem}}
