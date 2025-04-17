@@ -5,13 +5,13 @@ import {
   Routes,
   Route,
   Outlet,
-  Navigate,
 } from "react-router-dom";
 import Feed from "./pages/Feed";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import RequireAuth from "./routes/RequireAuth";
 import ProfilePage from "./pages/Profile";
+import {Toaster} from 'sonner'
 
 // This function is a React component designed to be a shared layout for multiple routes.
 function Layout({ isTopPage }: { isTopPage: boolean }) {
@@ -42,6 +42,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <Toaster position="top-center" richColors closeButton />
       <Routes>
         <Route element={<Layout isTopPage={isTopOfPage} />}>
           <Route path="/login" element={<Login />} />

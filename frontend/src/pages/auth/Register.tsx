@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import {Button} from '@/components/ui/button'
+import {Input} from '@/components/ui/input'
+import {Label} from '@/components/ui/label'
 
 type Props = {};
 
@@ -39,6 +42,16 @@ const Register = ({}: Props) => {
                 className="px-4 py-2 rounded-md border-none focus:outline-none"
               />
             </div>
+            
+            <div className="flex flex-col gap-1">
+              <label htmlFor="username" className="text-mutetColor">
+                Email
+              </label>
+              <input
+                type="email"
+                className="px-4 py-2 rounded-md border-none focus:outline-none"
+              />
+            </div>
 
             <div className="flex flex-col gap-1">
               <label htmlFor="password" className="text-mutetColor">
@@ -51,9 +64,12 @@ const Register = ({}: Props) => {
             </div>
           </div>
           {/* button */}
-          <button className="w-full mt-2 bg-primary hover:bg-secondary text-textLight font-semibold py-2 rounded-md transition">
-            Log In
-          </button>
+          {/* <button className="w-full mt-2 bg-primary hover:bg-secondary text-textLight font-semibold py-2 rounded-md transition">
+            Register
+          </button> */}
+          <Button type="submit" className="w-full mt-2 bg-primary hover:bg-secondary text-textLight font-semibold py-2 rounded-md transition">
+            Register
+          </Button>
         </div>
       </div>
     </div>
