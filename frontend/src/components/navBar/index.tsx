@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import NavLinks from "./NavLinks";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
 type Props = {
   isTopOfPage: boolean;
@@ -12,13 +13,15 @@ const Navbar = ({ isTopOfPage }: Props) => {
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const token = localStorage.getItem("token");
   const location = useLocation();
-  const navBarBackground = ["login", "register"].some((path) => location.pathname.includes(path))
+  const navigate = useNavigate();
+  const navBarBackground = ["login", "register"].some((path) =>
+    location.pathname.includes(path)
+  )
     ? "bg-background"
     : isTopOfPage
     ? ""
     : "bg-black drop-shadow";
 
-  // const navItems = ["About Us", "Featured Places", "Write a post"];
   const navItems = [
     {
       name: "About Us",
@@ -34,16 +37,38 @@ const Navbar = ({ isTopOfPage }: Props) => {
     },
   ];
 
-  const AuthButton = ({ mobile = false }: { mobile?: boolean }) => (
-    <Link
-      to="/login"
-      className={`${
-        mobile ? "bg-white text-gray-500" : "bg-primary text-textLight"
-      } px-5 py-1.5 border-none rounded-xl`}
-    >
-      {token ? "Logout" : "Sign In"}
-    </Link>
-  );
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userDetails");
+    setIsMenuToggled(false);
+    navigate("/login");
+  };
+
+  const AuthButton = ({ mobile = false }: { mobile?: boolean }) =>
+    token ? (
+      <>
+        <Button
+          className={`${
+            mobile ? "bg-white text-gray-500" : "bg-primary text-textLight"
+          } px-5 py-1.5 border-none rounded-xl`}
+          onClick={() => handleLogOut()}
+        >
+          Logout
+        </Button>
+      </>
+    ) : (
+      <Link
+        to="/login"
+        className={`${
+          mobile ? "bg-white text-gray-500" : "bg-primary text-textLight"
+        } px-5 py-1.5 border-none rounded-xl`}
+        onClick={() => {
+          mobile && setIsMenuToggled(false);
+        }}
+      >
+        Sign In
+      </Link>
+    );
 
   return (
     <nav>
@@ -52,11 +77,11 @@ const Navbar = ({ isTopOfPage }: Props) => {
       >
         <div className="w-5/6 mx-auto flex items-center justify-between">
           {/* Logo */}
-          {/* <h1 className="font-logo text-2xl sm:text-3xl md:text-4xl text-textPrimary"> */}
           <h1
             className={`font-logo text-2xl sm:text-3xl md:text-4xl ${
-              // location.pathname.includes("login")
-              ["login", "register"].some((path) => location.pathname.includes(path))
+              ["login", "register"].some((path) =>
+                location.pathname.includes(path)
+              )
                 ? "text-textLight"
                 : "text-textPrimary"
             }`}
@@ -67,21 +92,30 @@ const Navbar = ({ isTopOfPage }: Props) => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex w-4/6 items-center justify-between gap-2">
             <div className="flex w-3/4 items-center justify-evenly gap-7">
-              {!["login", "register"].some((path) => location.pathname.includes(path)) && navItems.map((item) => (
-              // {!location.pathname.includes("login") && navItems.map((item) => (
-                <NavLinks key={item.name} linkName={item.name} />
-              ))}
+              {!["login", "register"].some((path) =>
+                location.pathname.includes(path)
+              ) &&
+                navItems.map((item) => (
+                  <NavLinks key={item.name} linkName={item.name} />
+                ))}
             </div>
-            {!["login", "register"].some((path) => location.pathname.includes(path)) && <AuthButton />}
+            {!["login", "register"].some((path) =>
+              location.pathname.includes(path)
+            ) && <AuthButton />}
           </div>
 
           {/* Hamburger for Mobile */}
-          <button
-            className="md:hidden flex rounded-full bg-gray-500 p-2"
-            onClick={() => setIsMenuToggled(true)}
-          >
-            <Bars3Icon className="w-6 h-6 text-white" />
-          </button>
+          {/* Should Be hidden in login and register screens */}
+          {!["login", "register"].some((path) =>
+            location.pathname.includes(path)
+          ) && (
+            <button
+              className="md:hidden flex rounded-full bg-gray-500 p-2"
+              onClick={() => setIsMenuToggled(true)}
+            >
+              <Bars3Icon className="w-6 h-6 text-white" />
+            </button>
+          )}
         </div>
 
         {/* Mobile Sidebar Menu */}
