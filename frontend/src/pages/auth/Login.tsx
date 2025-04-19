@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +27,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 type Props = {};
 
 const Login = ({}: Props) => {
+  const navigate = useNavigate();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -43,8 +44,12 @@ const Login = ({}: Props) => {
     */
     try {
       const response = await authService.login(values);
-      console.log("logged in response :", response);
-      toast.success("Login successfull.");
+      if (response.status === 200) {
+        toast.success("Login successfull.");
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
+        navigate("/");
+      }
     } catch (error: any) {
       console.log(
         "error in login ",
@@ -126,30 +131,6 @@ const Login = ({}: Props) => {
               </Button>
             </form>
           </Form>
-          {/* <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <label htmlFor="username" className="text-mutetColor">
-                User Name
-              </label>
-              <input
-                type="text"
-                className="px-4 py-2 rounded-md border-none focus:outline-none"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="password" className="text-mutetColor">
-                Password
-              </label>
-              <input
-                type="text"
-                className="px-4 py-2 rounded-md border-none focus:outline-none"
-              />
-            </div>
-          </div> */}
-          {/* <button className="w-full mt-2 bg-primary hover:bg-secondary text-textLight font-semibold py-2 rounded-md transition">
-            Log In
-          </button> */}
         </div>
       </div>
     </div>
