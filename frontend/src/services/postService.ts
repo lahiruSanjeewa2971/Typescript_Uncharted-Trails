@@ -2,9 +2,11 @@ import axiosInstance from "@/api/axiosInstance";
 import { PostType } from "@/types/post";
 
 export const postService = {
-  getAllPostForFeed: async ():Promise<PostType[]> => {
+  getAllPostForFeed: async (): Promise<{ data: PostType[] }> => {
     try {
-      const response = await axiosInstance.get<PostType[]>("/api/posts");
+      const response = await axiosInstance.get<{ data: PostType[] }>(
+        "/api/posts"
+      );
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {

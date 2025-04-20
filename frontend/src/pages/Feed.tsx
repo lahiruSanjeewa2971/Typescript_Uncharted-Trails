@@ -3,17 +3,19 @@ import HeroSection from "./HeroSection";
 import { PostType } from "@/types/post";
 import { toast } from "sonner";
 import { postService } from "@/services/postService";
+import CommonSkeleton from "@/components/CommonSkeletonLoader";
+import { SinglePostCard } from "./SinglePostCard";
 
 const Feed = () => {
   const token = localStorage.getItem("token");
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [postListLoading, setPostListLoading] = useState<boolean>(false);
+  const [postListLoading, setPostListLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchPostsForFeed = async () => {
       try {
         const postList = await postService.getAllPostForFeed();
-        console.log("Post list :", postList);
+        setPosts(postList.data);
         setPostListLoading(false);
       } catch (error: any) {
         toast.error("Failed to fetch posts.");
@@ -36,17 +38,23 @@ const Feed = () => {
           <div className="space-y-6 p-4">
             {/* Feed */}
             {postListLoading ? (
-              <></>
-            ) : (
               <>
-                {Array.from({ length: 20 }).map((_, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-slate-800 text-white p-4 rounded-xl"
-                  >
-                    Scrollable Content {idx + 1}
+                {Array.from({ length: 3 }).map((_, idx) => (
+                  <div className="p-4 border rounded-md" key={idx}>
+                    <CommonSkeleton className="h-6 w-1/2 mb-4" />
+                    <CommonSkeleton className="h-4 w-full mb-2" />
+                    <CommonSkeleton className="h-4 w-5/6" />
                   </div>
                 ))}
+              </>
+            ) : (
+              <>
+                {Array.isArray(posts) &&
+                  posts.map((post) => (
+                    <div key={post._id}>
+                      <SinglePostCard post={post} />
+                    </div>
+                  ))}
               </>
             )}
           </div>

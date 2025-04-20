@@ -6,8 +6,8 @@ export type CommentType = {
 };
 
 export type LocationType = {
-  latitude: string;
-  longtitude: string;
+  latitude: number;
+  longtitude: number;
 };
 
 export type PostType = {
@@ -17,8 +17,8 @@ export type PostType = {
   images: string[];
   userId: string;
   likes: string[];
-  location: LocationType[];
-  Comments: CommentType[];
-  createAt: string;
+  location: LocationType;
+  comments: CommentType[];
+  createdAt: string;
   updatedAt: string;
 };
