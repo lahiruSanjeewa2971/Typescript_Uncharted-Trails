@@ -19,8 +19,8 @@ const Navbar = ({ isTopOfPage }: Props) => {
   )
     ? "bg-background"
     : isTopOfPage
-    ? ""
-    : "bg-black drop-shadow";
+    ? "bg-background"
+    : "bg-surface drop-shadow";
 
   const navItems = [
     {
@@ -78,13 +78,15 @@ const Navbar = ({ isTopOfPage }: Props) => {
         <div className="w-5/6 mx-auto flex items-center justify-between">
           {/* Logo */}
           <h1
-            className={`font-logo text-2xl sm:text-3xl md:text-4xl ${
+            className={`font-logo text-2xl sm:text-3xl md:text-4xl cursor-pointer ${
               ["login", "register"].some((path) =>
                 location.pathname.includes(path)
               )
                 ? "text-textLight"
-                : "text-textPrimary"
+                : "text-textLight"
+                // : isTopOfPage ? "text-textPrimary" : "text-textLight"
             }`}
+            onClick={() => {navigate('/')}}
           >
             Uncharted Trails
           </h1>
